@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +20,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/launcher_icons/
     - assets/images/
     - assets/sounds/
 
@@ -30,3 +32,11 @@ flutter:
           style: italic
         - asset: assets/fonts/nunito_bold.ttf
           weight: 700
+
+flutter_launcher_icons:
+  image_path: "assets/launcher_icons/app_icon_full.png"
+  android: true 
+  ios: true 
+  adaptive_icon_background: "assets/launcher_icons/app_icon_bg.png" 
+  adaptive_icon_foreground: "assets/launcher_icons/app_icon_fg.png"
+  min_sdk_android: 21 

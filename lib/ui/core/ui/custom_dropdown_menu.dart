@@ -33,7 +33,19 @@ class CustomDropdownMenu extends StatelessWidget {
             ),
           ),
           child: DropdownMenu(
-            width: MediaQuery.sizeOf(context).width * 0.8,
+            menuStyle: MenuStyle(
+              backgroundColor: WidgetStateProperty.all(AppColors.menuBackground),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: AppColors.primary,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+            width: MediaQuery.sizeOf(context).width * 0.8 > 300 ? 300 : MediaQuery.sizeOf(context).width * 0.8,
             inputDecorationTheme: InputDecorationTheme(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
