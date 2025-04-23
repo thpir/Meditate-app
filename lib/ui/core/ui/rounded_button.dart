@@ -14,12 +14,13 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double buttonPadding = size * 0.04 > 8 ? 8 : size * 0.04;
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 120, maxHeight: 120),
       child: Container(
         width: size,
         height: size,
-        padding: EdgeInsets.all(size * 0.04),
+        padding: EdgeInsets.all(buttonPadding),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: AppColors.tertiary,
