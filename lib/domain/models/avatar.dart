@@ -1,71 +1,71 @@
 enum Avatar {
   sofie(
-    id: 1,
+    id: 0,
     name: 'Sofie',
     imagePath: 'assets/images/avatar_1.webp',
   ),
   luna(
-    id: 2,
+    id: 1,
     name: 'Luna',
     imagePath: 'assets/images/avatar_2.webp',
   ),
   maya(
-    id: 3,
+    id: 2,
     name: 'Maya',
     imagePath: 'assets/images/avatar_3.webp',
   ),
   zara(
-    id: 4,
+    id: 3,
     name: 'Zara',
     imagePath: 'assets/images/avatar_4.webp',
   ),
   leo(
-    id: 5,
+    id: 4,
     name: 'Leo',
     imagePath: 'assets/images/avatar_5.webp',
   ),
   kai(
-    id: 6,
+    id: 5,
     name: 'Kai',
     imagePath: 'assets/images/avatar_6.webp',
   ),
   ava(
-    id: 7,
+    id: 6,
     name: 'Ava',
     imagePath: 'assets/images/avatar_7.webp',
   ),
   ezra(
-    id: 8,
+    id: 7,
     name: 'Ezra',
     imagePath: 'assets/images/avatar_8.webp',
   ),
   jax(
-    id: 9,
+    id: 8,
     name: 'Jax',
     imagePath: 'assets/images/avatar_9.webp',
   ),
   nova(
-    id: 10,
+    id: 9,
     name: 'Nova',
     imagePath: 'assets/images/avatar_10.webp',
   ),
   milo(
-    id: 11,
+    id: 10,
     name: 'Milo',
     imagePath: 'assets/images/avatar_11.webp',
   ),
   sage(
-    id: 12,
+    id: 11,
     name: 'Sage',
     imagePath: 'assets/images/avatar_12.webp',
   ),
   ivy(
-    id: 13,
+    id: 12,
     name: 'Ivy',
     imagePath: 'assets/images/avatar_13.webp',
   ),
   orion(
-    id: 14,
+    id: 13,
     name: 'Orion',
     imagePath: 'assets/images/avatar_14.webp',
   );

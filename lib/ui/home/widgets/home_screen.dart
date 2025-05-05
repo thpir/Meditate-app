@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:meditate_app/data/repositories/user_preferences.dart';
+import 'package:meditate_app/domain/models/meditation_duration.dart';
+import 'package:meditate_app/domain/models/meditation_sound.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 import 'package:meditate_app/ui/core/ui/avatar_view.dart';
 import 'package:meditate_app/ui/core/ui/custom_dropdown_menu.dart';
 import 'package:meditate_app/ui/core/ui/rounded_button.dart';
+import 'package:meditate_app/ui/home/view_model/home_screen_view_model.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -10,65 +15,69 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-        left: true,
-        right: true,
-        bottom: true,
-        top: true,
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: OrientationBuilder(
-                builder: (context, orientation) {
-                  if (orientation == Orientation.portrait) {
-                    return Column(
-                      children: [
-                        Expanded(child: Header()),
-                        const SizedBox(height: 32),
-                        Expanded(child: Actions()),
-                      ],
-                    );
-                  } else {
-                    return Row(
-                      children: [
-                        Expanded(child: Header()),
-                        const SizedBox(height: 32),
-                        Expanded(child: Actions()),
-                      ],
-                    );
+    final userPrefs = Provider.of<UserPreferences>(context);
+    return ChangeNotifierProvider(
+      create: (_) => HomeScreenViewModel(userPrefs),
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        extendBodyBehindAppBar: true,
+        body: SafeArea(
+          left: true,
+          right: true,
+          bottom: true,
+          top: true,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: OrientationBuilder(
+                  builder: (context, orientation) {
+                    if (orientation == Orientation.portrait) {
+                      return Column(
+                        children: [
+                          Expanded(child: Header()),
+                          const SizedBox(height: 32),
+                          Expanded(child: Actions()),
+                        ],
+                      );
+                    } else {
+                      return Row(
+                        children: [
+                          Expanded(child: Header()),
+                          const SizedBox(height: 32),
+                          Expanded(child: Actions()),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+              PopupMenuButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    30,
+                  ), // Adjust the radius as needed
+                ),
+                color: AppColors.menuBackground,
+                icon: const Icon(Icons.menu, color: AppColors.onPrimary),
+                onSelected: (value) {
+                  if (value == 1) {
+                    Navigator.pushNamed(context, '/user-settings');
+                  } else if (value == 2) {
+                    Navigator.pushNamed(context, '/pick-avatar');
                   }
                 },
+                itemBuilder:
+                    (context) => [
+                      const PopupMenuItem(value: 1, child: Text('User settings')),
+                      const PopupMenuItem(
+                        value: 2,
+                        child: Text('Pick an avatar'),
+                      ),
+                    ],
               ),
-            ),
-            PopupMenuButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  30,
-                ), // Adjust the radius as needed
-              ),
-              color: AppColors.menuBackground,
-              icon: const Icon(Icons.menu, color: AppColors.onPrimary),
-              onSelected: (value) {
-                if (value == 1) {
-                  Navigator.pushNamed(context, '/user-settings');
-                } else if (value == 2) {
-                  Navigator.pushNamed(context, '/pick-avatar');
-                }
-              },
-              itemBuilder:
-                  (context) => [
-                    const PopupMenuItem(value: 1, child: Text('User settings')),
-                    const PopupMenuItem(
-                      value: 2,
-                      child: Text('Pick an avatar'),
-                    ),
-                  ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -92,7 +101,10 @@ class Header extends StatelessWidget {
                 tag: 'avatar',
                 child: AvatarView(
                   size: size,
-                  imagePath: 'assets/images/avatar_1.webp',
+                  imagePath: context
+                      .watch<HomeScreenViewModel>()
+                      .selectedAvatar
+                      .imagePath,
                 ),
               );
             },
@@ -100,7 +112,11 @@ class Header extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         Text(
-          'Welcome, Thijs',
+          'Welcome ${
+            context
+                .watch<UserPreferences>()
+                .name
+          }',
           style: TextStyle(
             fontSize: 28,
             color: AppColors.onPrimary,
@@ -115,31 +131,52 @@ class Header extends StatelessWidget {
 class Actions extends StatelessWidget {
   const Actions({super.key});
 
+  List<DropdownMenuEntry> getDurationDropdownMenuEntries() {
+    return MeditationDuration.values
+        .map(
+          (duration) => DropdownMenuEntry(
+            label: duration.name,
+            value: duration,
+          ),
+        )
+        .toList();
+  }
+
+  List<DropdownMenuEntry> getSoundDropdownMenuEntries() {
+    return MeditationSound.values
+        .map(
+          (sound) => DropdownMenuEntry(
+            label: sound.name,
+            value: sound,
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 350),
+      constraints: BoxConstraints(
+        maxHeight: 350,
+      ),
       child: Column(
         children: [
           CustomDropdownMenu(
-            items: [
-              DropdownMenuEntry(label: '5 min', value: '5 min'),
-              DropdownMenuEntry(label: '10 min', value: '10 min'),
-            ],
-            initialSelection: '5 min',
+            items: getDurationDropdownMenuEntries(),
+            initialSelection: context.watch<HomeScreenViewModel>().selectedDuration,
             leadingIcon: Icons.timer_outlined,
+            newValueSelected: (newValue) {
+              context.read<HomeScreenViewModel>().selectedDuration = newValue;
+            },
           ),
           const SizedBox(height: 20),
           CustomDropdownMenu(
-            items: [
-              DropdownMenuEntry(label: 'None', value: 'None'),
-              DropdownMenuEntry(
-                label: 'Birds chirping',
-                value: 'Birds chirping',
-              ),
-            ],
-            initialSelection: 'Birds chirping',
+            items: getSoundDropdownMenuEntries(),
+            initialSelection: context.watch<HomeScreenViewModel>().selectedSound,
             leadingIcon: Icons.music_note_rounded,
+            newValueSelected: (newValue) {
+              context.read<HomeScreenViewModel>().selectedSound = newValue;
+            },
           ),
           const SizedBox(height: 20),
           Expanded(

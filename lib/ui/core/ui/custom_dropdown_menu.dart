@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 
@@ -5,7 +7,9 @@ class CustomDropdownMenu extends StatelessWidget {
   final List<DropdownMenuEntry> items;
   final IconData leadingIcon;
   final dynamic initialSelection;
-  const CustomDropdownMenu({required this.items, required this.leadingIcon, required this.initialSelection, super.key});
+  final Function(dynamic)? newValueSelected;
+
+  const CustomDropdownMenu({required this.items, required this.leadingIcon, required this.initialSelection, this.newValueSelected, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,8 @@ class CustomDropdownMenu extends StatelessWidget {
               ),
             ),
           ),
-          width: MediaQuery.sizeOf(context).width * 0.8 > 300 ? 300 : MediaQuery.sizeOf(context).width * 0.8,
+          menuHeight: 200,
+          width: max(100, min(300, MediaQuery.sizeOf(context).width * 0.8)),
           inputDecorationTheme: InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -61,6 +66,7 @@ class CustomDropdownMenu extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
+          onSelected: newValueSelected,
           dropdownMenuEntries: items,
         ),
       ),
