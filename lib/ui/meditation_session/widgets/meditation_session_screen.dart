@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 import 'package:meditate_app/ui/core/ui/avatar_view.dart';
+import 'package:meditate_app/ui/meditation_session/view_models/meditation_session_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MeditationSessionScreen extends StatelessWidget {
   static const String routeName = '/meditation-session';
@@ -8,98 +11,106 @@ class MeditationSessionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      extendBodyBehindAppBar: false,
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.primary,
-      //   elevation: 0,
+    final userPrefs = Provider.of<UserPreferences>(context);
+    return ChangeNotifierProvider(
+      create: (_) => MeditationSessionViewModel(userPrefs),
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        extendBodyBehindAppBar: false,
+        body: SessionBody()
+      ),
+    );
+  }
+}
 
-      // ),
-      body: SafeArea(
-        left: true,
-        right: true,
-        bottom: true,
-        top: true,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            OrientationBuilder(
-              builder: (context, orientation) {
-                if (orientation == Orientation.portrait) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      top: AppBar().preferredSize.height,
-                    ),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height * .65,
-                            width: MediaQuery.sizeOf(context).width,
-                            child: ClipRect(
-                              child: OverflowBox(
-                                maxWidth: double.infinity,
-                                alignment: Alignment.topCenter,
-                                child: Hero(
-                                  tag: 'avatar',
-                                  child: AvatarView(
-                                    size:
-                                        MediaQuery.sizeOf(context).height * .7,
-                                    imagePath: 'assets/images/avatar_1.webp',
+class SessionBody extends StatelessWidget {
+  const SessionBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+          left: true,
+          right: true,
+          bottom: true,
+          top: true,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              OrientationBuilder(
+                builder: (context, orientation) {
+                  if (orientation == Orientation.portrait) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: AppBar().preferredSize.height,
+                      ),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(context).height * .65,
+                              width: MediaQuery.sizeOf(context).width,
+                              child: ClipRect(
+                                child: OverflowBox(
+                                  maxWidth: double.infinity,
+                                  alignment: Alignment.topCenter,
+                                  child: Hero(
+                                    tag: 'avatar',
+                                    child: AvatarView(
+                                      size:
+                                          MediaQuery.sizeOf(context).height * .7,
+                                      imagePath: context.read<MeditationSessionViewModel>().selectedAvatar.imagePath,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SessionControls(
+                              size:
+                                  MediaQuery.sizeOf(context).width >
+                                          MediaQuery.sizeOf(context).height
+                                      ? MediaQuery.sizeOf(context).height * 0.3
+                                      : MediaQuery.sizeOf(context).width * .6,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: AvatarView(
+                            size: MediaQuery.sizeOf(context).height * .7,
+                            imagePath: context.read<MeditationSessionViewModel>().selectedAvatar.imagePath,
+                          ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
+                        Expanded(
                           child: SessionControls(
-                            size:
-                                MediaQuery.sizeOf(context).width >
-                                        MediaQuery.sizeOf(context).height
-                                    ? MediaQuery.sizeOf(context).height * 0.3
-                                    : MediaQuery.sizeOf(context).width * .6,
+                            size: MediaQuery.sizeOf(context).height * .7,
                           ),
                         ),
                       ],
-                    ),
-                  );
-                } else {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: AvatarView(
-                          size: MediaQuery.sizeOf(context).height * .7,
-                          imagePath: 'assets/images/avatar_1.webp',
-                        ),
-                      ),
-                      Expanded(
-                        child: SessionControls(
-                          size: MediaQuery.sizeOf(context).height * .7,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              },
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                color: AppColors.onPrimary,
-                onPressed: () => Navigator.of(context).pop(),
+                    );
+                  }
+                },
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  color: AppColors.onPrimary,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ],
+          ),
+        );
   }
 }
 
