@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
+import 'package:meditate_app/domain/models/meditation_duration.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 import 'package:meditate_app/ui/core/ui/avatar_view.dart';
 import 'package:meditate_app/ui/meditation_session/view_models/meditation_session_view_model.dart';
@@ -12,8 +13,11 @@ class MeditationSessionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userPrefs = Provider.of<UserPreferences>(context);
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final MeditationDuration duration = args['duration'] as MeditationDuration;
+
     return ChangeNotifierProvider(
-      create: (_) => MeditationSessionViewModel(userPrefs),
+      create: (_) => MeditationSessionViewModel(userPrefs, duration: duration),
       child: Scaffold(
         backgroundColor: AppColors.primary,
         extendBodyBehindAppBar: false,
@@ -153,7 +157,7 @@ class SessionControls extends StatelessWidget {
               ),
             ),
             child: CircularProgressIndicator(
-              value: 0.7,
+              value: context.watch<MeditationSessionViewModel>().progress,
               color: AppColors.onPrimary,
               strokeCap: StrokeCap.round,
               strokeWidth:
@@ -165,9 +169,14 @@ class SessionControls extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.pause),
-                const Text(
-                  '10:34',
+                InkWell(
+                  onTap: context.read<MeditationSessionViewModel>().playButtonPressed,
+                  child: Icon(context.watch<MeditationSessionViewModel>().isPlaying
+                      ? Icons.pause
+                      : Icons.play_arrow),
+                ),
+                Text(
+                  context.watch<MeditationSessionViewModel>().timePassed,
                   style: TextStyle(
                     fontSize: 28,
                     color: AppColors.onPrimary,
@@ -175,7 +184,7 @@ class SessionControls extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '15:00',
+                  context.watch<MeditationSessionViewModel>().durationText,
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.onPrimary,

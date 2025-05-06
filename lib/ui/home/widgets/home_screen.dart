@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userPrefs = Provider.of<UserPreferences>(context);
     return ChangeNotifierProvider(
-      create: (_) => HomeScreenViewModel(userPrefs),
+      create: (context) => HomeScreenViewModel(userPrefs, context),
       child: Scaffold(
         backgroundColor: AppColors.primary,
         extendBodyBehindAppBar: true,
@@ -187,9 +187,7 @@ class Actions extends StatelessWidget {
                   final height = constraints.maxHeight;
                   return RoundedButton(
                     size: height,
-                    buttonAction: () {
-                      Navigator.pushNamed(context, '/meditation-session');
-                    },
+                    buttonAction: context.read<HomeScreenViewModel>().startMeditationSessionButtonPressed,
                     child: Icon(
                       Icons.play_arrow_rounded,
                       color: AppColors.onPrimary,
