@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
+  just_audio: ^0.10.2
   logger: ^2.5.0
   provider: ^6.1.4
   shared_preferences: ^2.5.3

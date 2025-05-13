@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
+import 'package:meditate_app/domain/models/meditation_sound.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 import 'package:meditate_app/ui/core/ui/avatar_view.dart';
 import 'package:meditate_app/ui/meditation_session/view_models/meditation_session_view_model.dart';
@@ -15,9 +16,10 @@ class MeditationSessionScreen extends StatelessWidget {
     final userPrefs = Provider.of<UserPreferences>(context);
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final MeditationDuration duration = args['duration'] as MeditationDuration;
+    final MeditationSound sound = args['sound'] as MeditationSound;
 
     return ChangeNotifierProvider(
-      create: (_) => MeditationSessionViewModel(userPrefs, duration: duration),
+      create: (_) => MeditationSessionViewModel(userPrefs, duration: duration, sound: sound),
       child: Scaffold(
         backgroundColor: AppColors.primary,
         extendBodyBehindAppBar: false,
