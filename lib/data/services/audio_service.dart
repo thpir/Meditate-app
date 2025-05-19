@@ -2,13 +2,18 @@ import 'package:just_audio/just_audio.dart';
 import 'package:meditate_app/data/services/logging_service.dart';
 
 class AudioService {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  late AudioPlayer _audioPlayer;
   final LoggingService _loggingService = LoggingService();
+
+  AudioService() {
+    _audioPlayer = AudioPlayer();
+  }
 
   Future<void> initiateAudio(String path) async {
     _loggingService.d("Initiating audio with path: $path");
     try {
-      await _audioPlayer.setAsset(path);
+      AudioSource audioSource = AudioSource.uri(Uri.parse('asset:///$path'));
+      await _audioPlayer.setAudioSource(audioSource);
       await _audioPlayer.setLoopMode(LoopMode.all);
     } catch (e) {
       _loggingService.e("Failed to initiate audio: $e");

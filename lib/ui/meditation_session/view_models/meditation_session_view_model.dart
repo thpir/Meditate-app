@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/data/services/audio_service.dart';
 import 'package:meditate_app/data/services/logging_service.dart';
 import 'package:meditate_app/domain/models/avatar.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
 import 'package:meditate_app/domain/models/meditation_sound.dart';
+import 'package:vibration/vibration.dart';
 
 class MeditationSessionViewModel extends ChangeNotifier {
-  final AudioService _audioService = AudioService();
   final LoggingService _loggingService = LoggingService();
   final UserPreferences _userPreferences;
   final MeditationDuration duration;
   final MeditationSound sound;
+  late AudioService _audioService;
   bool _isPlaying = false;
   int _timePassed = 0;
 
-  MeditationSessionViewModel(this._userPreferences, {required this.duration, required this.sound}) {
+  MeditationSessionViewModel(
+    this._userPreferences, {
+    required this.duration,
+    required this.sound,
+  }) {
     _loggingService.d("constructing MeditationSessionViewModel");
+    _audioService = AudioService();
+    KeepScreenOn.turnOn();
     _initSession();
   }
 
   @override
   Future<void> dispose() async {
+    _loggingService.d("disposing MeditationSessionViewModel");
+    KeepScreenOn.turnOff();
     _isPlaying = false;
     if (sound.audioPath != null) {
       await _audioService.dispose();
@@ -36,6 +46,7 @@ class MeditationSessionViewModel extends ChangeNotifier {
     final seconds = (_timePassed % 60).toString().padLeft(2, '0');
     return '$minutes:$seconds';
   }
+
   String get durationText {
     final minutes = (duration.duration.inSeconds ~/ 60).toString().padLeft(
       2,
@@ -47,6 +58,7 @@ class MeditationSessionViewModel extends ChangeNotifier {
     );
     return '$minutes:$seconds';
   }
+
   bool get isPlaying => _isPlaying;
 
   void playButtonPressed() {
@@ -87,6 +99,7 @@ class MeditationSessionViewModel extends ChangeNotifier {
       if (_sessionIsOver()) {
         _pauseSession();
         _stopSession();
+        await _notifyUserWithVibration();
         break;
       }
     }
@@ -108,5 +121,11 @@ class MeditationSessionViewModel extends ChangeNotifier {
       _audioService.stopAudio();
     }
     notifyListeners();
+  }
+
+  Future<void> _notifyUserWithVibration() async {
+    if (await Vibration.hasVibrator()) {
+      await Vibration.vibrate();
+    }
   }
 }

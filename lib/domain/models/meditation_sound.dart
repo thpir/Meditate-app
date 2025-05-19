@@ -7,37 +7,32 @@ enum MeditationSound {
   birds(
     id: 1,
     name: 'Birds',
-    audioPath: 'assets/audio/birds.wav',
+    audioPath: 'assets/audio/birds.mp3',
   ),
   kerriCatalpa(
     id: 2,
     name: 'Kerri Catalpa',
-    audioPath: 'assets/audio/kerri_catalpa.wav',
+    audioPath: 'assets/audio/kerri_catalpa.mp3',
   ),
-  metronomeOption1(
+  metronome(
     id: 3,
-    name: 'Metronome Option 1',
-    audioPath: 'assets/audio/metronome_option_1.wav',
-  ),
-  metronomeOption2(
-    id: 4,
-    name: 'Metronome Option 2',
-    audioPath: 'assets/audio/metronome_option_2.wav',
+    name: 'Metronome',
+    audioPath: 'assets/audio/metronome.mp3',
   ),
   ocean(
-    id: 5,
+    id: 4,
     name: 'Ocean',
-    audioPath: 'assets/audio/ocean.wav',
+    audioPath: 'assets/audio/ocean.mp3',
   ),
   river(
-    id: 6,
+    id: 5,
     name: 'River',
-    audioPath: 'assets/audio/river.wav',
+    audioPath: 'assets/audio/river.mp3',
   ),
   tibetanBells(
-    id: 7,
+    id: 6,
     name: 'Tibetan Bells',
-    audioPath: 'assets/audio/tibetan_bells.wav',
+    audioPath: 'assets/audio/tibetan_bells.mp3',
   );
 
   final int id;
