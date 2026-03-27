@@ -9,9 +9,7 @@ class WaitingScreen extends StatelessWidget {
     return const Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
-        child: CircularProgressIndicator(
-          color: AppColors.onPrimary,
-        ),
+        child: CircularProgressIndicator(color: AppColors.onPrimary),
       ),
     );
   }

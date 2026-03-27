@@ -58,16 +58,6 @@ enum Avatar {
     id: 11,
     name: 'Sage',
     imagePath: 'assets/images/avatar_12.webp',
-  ),
-  ivy(
-    id: 12,
-    name: 'Ivy',
-    imagePath: 'assets/images/avatar_13.webp',
-  ),
-  orion(
-    id: 13,
-    name: 'Orion',
-    imagePath: 'assets/images/avatar_14.webp',
   );
 
   final int id;

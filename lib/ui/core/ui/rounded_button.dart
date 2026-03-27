@@ -41,9 +41,7 @@ class RoundedButton extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
           ),
-          child: Center(child: InkWell(
-            onTap: buttonAction,
-            child: child)),
+          child: Center(child: InkWell(onTap: buttonAction, child: child)),
         ),
       ),
     );

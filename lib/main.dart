@@ -20,8 +20,13 @@ class MainApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => UserPreferences(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: AppColors.primary,
+          colorScheme: ColorScheme.fromSeed(
+                seedColor: AppColors.primary,
+                brightness: Brightness.light,
+              ),
           useMaterial3: true,
           fontFamily: 'Nunito'),
         home: Consumer<UserPreferences>(

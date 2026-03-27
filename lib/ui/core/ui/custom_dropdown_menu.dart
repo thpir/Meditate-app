@@ -9,7 +9,13 @@ class CustomDropdownMenu extends StatelessWidget {
   final dynamic initialSelection;
   final Function(dynamic)? newValueSelected;
 
-  const CustomDropdownMenu({required this.items, required this.leadingIcon, required this.initialSelection, this.newValueSelected, super.key});
+  const CustomDropdownMenu({
+    required this.items,
+    required this.leadingIcon,
+    required this.initialSelection,
+    this.newValueSelected,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +45,7 @@ class CustomDropdownMenu extends StatelessWidget {
             backgroundColor: WidgetStateProperty.all(AppColors.menuBackground),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
-                side: BorderSide(
-                  color: AppColors.primary,
-                  width: 1,
-                ),
+                side: BorderSide(color: AppColors.primary, width: 1),
                 borderRadius: BorderRadius.circular(30),
               ),
             ),

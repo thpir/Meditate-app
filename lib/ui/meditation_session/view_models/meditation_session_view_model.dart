@@ -125,7 +125,9 @@ class MeditationSessionViewModel extends ChangeNotifier {
 
   Future<void> _notifyUserWithVibration() async {
     if (await Vibration.hasVibrator()) {
-      await Vibration.vibrate();
+      await Vibration.vibrate(
+        pattern: [0, 400, 200, 400, 200, 800],
+      );
     }
   }
 }

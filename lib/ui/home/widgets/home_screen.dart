@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
 import 'package:meditate_app/domain/models/meditation_sound.dart';
@@ -18,7 +19,11 @@ class HomeScreen extends StatelessWidget {
     final userPrefs = Provider.of<UserPreferences>(context);
     return ChangeNotifierProvider(
       create: (context) => HomeScreenViewModel(userPrefs, context),
-      child: Scaffold(
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: AppColors.primary,
+        ),
+        child: Scaffold(
         backgroundColor: AppColors.primary,
         extendBodyBehindAppBar: true,
         body: SafeArea(
@@ -78,6 +83,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
