@@ -103,7 +103,10 @@ class AvatarListView extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.only(
+          top: 16 + MediaQuery.of(context).padding.top,
+          bottom: 16 + MediaQuery.of(context).padding.bottom,
+        ),
         child: Center(
           child: Wrap(
             alignment: WrapAlignment.start,

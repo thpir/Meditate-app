@@ -1,7 +1,7 @@
 name: meditate_app
 description: "Train your mindfulness"
 publish_to: 'none'
-version: 0.2.1+3
+version: 0.2.2+4
 
 environment:
   sdk: ^3.7.2
