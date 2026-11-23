@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
 import 'package:meditate_app/domain/models/meditation_sound.dart';
@@ -8,19 +8,19 @@ import 'package:meditate_app/ui/meditation_session/view_models/meditation_sessio
 import 'package:provider/provider.dart';
 
 class MeditationSessionScreen extends StatelessWidget {
-  static const String routeName = '/meditation-session';
+  static const routeName = '/meditation-session';
   const MeditationSessionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final userPrefs = Provider.of<UserPreferences>(context);
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final MeditationDuration duration = args['duration'] as MeditationDuration;
-    final MeditationSound sound = args['sound'] as MeditationSound;
+    final duration = args['duration'] as MeditationDuration;
+    final sound = args['sound'] as MeditationSound;
 
     return ChangeNotifierProvider(
       create: (_) => MeditationSessionViewModel(userPrefs, duration: duration, sound: sound),
-      child: Scaffold(
+      child: const Scaffold(
         backgroundColor: AppColors.primary,
         extendBodyBehindAppBar: false,
         body: SessionBody()
@@ -126,15 +126,15 @@ class SessionControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double controlsSize = size > 300 ? 300 : size;
-    double controlsPadding =
+    final double controlsSize = size > 300 ? 300 : size;
+    final double controlsPadding =
         controlsSize * 0.04 > 16 ? 16 : controlsSize * 0.04;
     return Container(
       width: controlsSize,
       height: controlsSize,
-      margin: EdgeInsets.all(24),
+      margin: const EdgeInsets.all(24),
       padding: EdgeInsets.all(controlsPadding),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.tertiary,
       ),
@@ -179,7 +179,7 @@ class SessionControls extends StatelessWidget {
                 ),
                 Text(
                   context.watch<MeditationSessionViewModel>().timePassed,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 28,
                     color: AppColors.onPrimary,
                     fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class SessionControls extends StatelessWidget {
                 ),
                 Text(
                   context.watch<MeditationSessionViewModel>().durationText,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: AppColors.onPrimary,
                     fontWeight: FontWeight.bold,

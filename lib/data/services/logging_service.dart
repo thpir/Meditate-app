@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class LoggingService {
-  final Logger _logger = Logger(filter: ProductionFilter());
+  final _logger = Logger(filter: ProductionFilter());
 
   void t(String message) {
     _logger.t(message);

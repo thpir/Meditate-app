@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 
 class AvatarView extends StatelessWidget {
@@ -8,12 +8,12 @@ class AvatarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double avatarPadding = size * 0.04 > 16 ? 16 : size * 0.04;
+    final double avatarPadding = size * 0.04 > 16 ? 16 : size * 0.04;
     return Container(
       width: size,
       height: size,
       padding: EdgeInsets.all(avatarPadding),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.tertiary,
       ),

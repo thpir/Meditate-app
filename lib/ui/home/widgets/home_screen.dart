@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
@@ -8,10 +8,11 @@ import 'package:meditate_app/ui/core/ui/avatar_view.dart';
 import 'package:meditate_app/ui/core/ui/custom_dropdown_menu.dart';
 import 'package:meditate_app/ui/core/ui/rounded_button.dart';
 import 'package:meditate_app/ui/home/view_model/home_screen_view_model.dart';
+import 'package:meditate_app/ui/water_intake/widgets/water_intake_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const String routeName = '/home';
+  static const routeName = '/home';
   const HomeScreen({super.key});
 
   @override
@@ -38,18 +39,18 @@ class HomeScreen extends StatelessWidget {
                 child: OrientationBuilder(
                   builder: (context, orientation) {
                     if (orientation == Orientation.portrait) {
-                      return Column(
+                      return const Column(
                         children: [
                           Expanded(child: Header()),
-                          const SizedBox(height: 32),
+                          SizedBox(height: 32),
                           Expanded(child: Actions()),
                         ],
                       );
                     } else {
-                      return Row(
+                      return const Row(
                         children: [
                           Expanded(child: Header()),
-                          const SizedBox(height: 32),
+                          SizedBox(height: 32),
                           Expanded(child: Actions()),
                         ],
                       );
@@ -80,6 +81,20 @@ class HomeScreen extends StatelessWidget {
                         child: Text('Pick an avatar'),
                       ),
                     ],
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.water_drop_outlined,
+                    color: AppColors.onPrimary,
+                  ),
+                  tooltip: 'Water intake',
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    WaterIntakeScreen.routeName,
+                  ),
+                ),
               ),
             ],
           ),
@@ -123,7 +138,7 @@ class Header extends StatelessWidget {
                 .watch<UserPreferences>()
                 .name
           }',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 28,
             color: AppColors.onPrimary,
             fontWeight: FontWeight.w600,
@@ -162,7 +177,7 @@ class Actions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         maxHeight: 350,
       ),
       child: Column(

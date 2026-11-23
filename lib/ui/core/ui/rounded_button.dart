@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 
 class RoundedButton extends StatelessWidget {
@@ -14,14 +14,14 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double buttonPadding = size * 0.04 > 8 ? 8 : size * 0.04;
+    final double buttonPadding = size * 0.04 > 8 ? 8 : size * 0.04;
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 120, maxHeight: 120),
+      constraints: const BoxConstraints(maxWidth: 120, maxHeight: 120),
       child: Container(
         width: size,
         height: size,
         padding: EdgeInsets.all(buttonPadding),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: AppColors.tertiary,
         ),
@@ -31,7 +31,7 @@ class RoundedButton extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: AppColors.primary, width: 1),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 AppColors.quaternary,
                 AppColors.tertiary,

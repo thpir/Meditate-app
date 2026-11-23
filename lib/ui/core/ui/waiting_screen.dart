@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 
 class WaitingScreen extends StatelessWidget {

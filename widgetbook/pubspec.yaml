@@ -1,0 +1,24 @@
+name: meditate_widgetbook
+description: "Widgetbook catalogue of the Meditate app design system."
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.10.0
+
+# Kept as a separate package (instead of a dev dependency of the app) so that
+# Widgetbook's own plugins, such as url_launcher, never end up in the app's
+# dependency graph or break its release builds.
+dependencies:
+  flutter:
+    sdk: flutter
+  meditate_app:
+    path: ../
+  widgetbook: ^3.25.0
+
+  material_ui: any
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,18 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/data/services/logging_service.dart';
 import 'package:meditate_app/data/services/shared_prefs_service.dart';
 import 'package:meditate_app/domain/models/avatar.dart';
 import 'package:meditate_app/domain/models/meditation_duration.dart';
 import 'package:meditate_app/domain/models/meditation_sound.dart';
+import 'package:meditate_app/domain/models/water_goal.dart';
 
 class UserPreferences extends ChangeNotifier {
-  final SharedPrefsService _prefsService = SharedPrefsService();
-  final LoggingService _loggingService = LoggingService();
+  final _prefsService = SharedPrefsService();
+  final _loggingService = LoggingService();
   late String _name;
   late Avatar _avatar;
   late MeditationDuration _duration;
   late MeditationSound _sound;
-  bool _prefsLoaded = false;
+  WaterGoal _waterGoal = WaterGoal.defaultGoal;
+  var _prefsLoaded = false;
 
   UserPreferences() {
     _loadPreferences();
@@ -22,6 +24,7 @@ class UserPreferences extends ChangeNotifier {
   Avatar get avatar => _avatar;
   MeditationDuration get duration => _duration;
   MeditationSound get sound => _sound;
+  WaterGoal get waterGoal => _waterGoal;
   bool get prefsLoaded => _prefsLoaded;
 
   set name(String value) {
@@ -52,6 +55,13 @@ class UserPreferences extends ChangeNotifier {
     notifyListeners();
   }
 
+  set waterGoal(WaterGoal value) {
+    _loggingService.i('Setting water goal to $value, and saving to SharedPreferences');
+    _waterGoal = value;
+    _prefsService.setInt(SharedPrefsService.WATER_GOAL_KEY, value.ml);
+    notifyListeners();
+  }
+
   set prefsLoaded(bool value) {
     _loggingService.d('Finished loading preferences');
     _prefsLoaded = value;
@@ -65,6 +75,7 @@ class UserPreferences extends ChangeNotifier {
           getAvatarFromPrefs(),
           getDurationFromPrefs(),
           getSoundFromPrefs(),
+          getWaterGoalFromPrefs(),
         ])
         .catchError((e) {
           _loggingService.e('Error loading preferences from SharedPreferences: $e');
@@ -83,13 +94,13 @@ class UserPreferences extends ChangeNotifier {
   }
 
   Future<void> getAvatarFromPrefs() async {
-    int avatarId = await _prefsService.getInt(SharedPrefsService.AVATAR_KEY);
+    final int avatarId = await _prefsService.getInt(SharedPrefsService.AVATAR_KEY);
     _loggingService.i('Avatar ID from SharedPreferences: $avatarId');
     _avatar = Avatar.values.firstWhere((avatar) => avatar.id == avatarId);
   }
 
   Future<void> getDurationFromPrefs() async {
-    int durationId = await _prefsService.getInt(
+    final int durationId = await _prefsService.getInt(
       SharedPrefsService.DURATION_KEY,
     );
     _loggingService.i('Duration ID from SharedPreferences: $durationId');
@@ -99,9 +110,16 @@ class UserPreferences extends ChangeNotifier {
   }
 
   Future<void> getSoundFromPrefs() async {
-    int soundId = await _prefsService.getInt(SharedPrefsService.SOUND_KEY);
+    final int soundId = await _prefsService.getInt(SharedPrefsService.SOUND_KEY);
     _loggingService.i('Sound ID from SharedPreferences: $soundId');
     _sound = MeditationSound.values.firstWhere((sound) => sound.id == soundId);
+  }
+
+  Future<void> getWaterGoalFromPrefs() async {
+    // Stored as ml; 0 (nothing stored yet) falls back to the default goal.
+    final int waterGoalMl = await _prefsService.getInt(SharedPrefsService.WATER_GOAL_KEY);
+    _loggingService.i('Water goal (ml) from SharedPreferences: $waterGoalMl');
+    _waterGoal = WaterGoal.fromMl(waterGoalMl);
   }
 
   void _loadDefaultPreferences() {
@@ -110,5 +128,6 @@ class UserPreferences extends ChangeNotifier {
     _avatar = Avatar.values[0];
     _duration = MeditationDuration.values[0];
     _sound = MeditationSound.values[0];
+    _waterGoal = WaterGoal.defaultGoal;
   }
 }

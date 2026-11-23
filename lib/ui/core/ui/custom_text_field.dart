@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -18,7 +18,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 400),
+      constraints: const BoxConstraints(maxWidth: 400),
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -28,7 +28,7 @@ class CustomTextField extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 AppColors.quaternary,
                 AppColors.quaternary,
@@ -43,7 +43,7 @@ class CustomTextField extends StatelessWidget {
           child: TextField(
             controller: controller,
             onChanged: onChanged,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.onPrimary,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -57,11 +57,11 @@ class CustomTextField extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppColors.primary, width: 1),
+                borderSide: const BorderSide(color: AppColors.primary, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppColors.primary, width: 1),
+                borderSide: const BorderSide(color: AppColors.primary, width: 1),
               ),
             ),
           ),

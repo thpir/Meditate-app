@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:keep_screen_on/keep_screen_on.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/data/services/audio_service.dart';
@@ -9,20 +9,20 @@ import 'package:meditate_app/domain/models/meditation_sound.dart';
 import 'package:vibration/vibration.dart';
 
 class MeditationSessionViewModel extends ChangeNotifier {
-  final LoggingService _loggingService = LoggingService();
+  final _loggingService = LoggingService();
   final UserPreferences _userPreferences;
   final MeditationDuration duration;
   final MeditationSound sound;
   late AudioService _audioService;
-  bool _isPlaying = false;
-  int _timePassed = 0;
+  var _isPlaying = false;
+  var _timePassed = 0;
 
   MeditationSessionViewModel(
     this._userPreferences, {
     required this.duration,
     required this.sound,
   }) {
-    _loggingService.d("constructing MeditationSessionViewModel");
+    _loggingService.d('constructing MeditationSessionViewModel');
     _audioService = AudioService();
     KeepScreenOn.turnOn();
     _initSession();
@@ -30,8 +30,8 @@ class MeditationSessionViewModel extends ChangeNotifier {
 
   @override
   Future<void> dispose() async {
-    _loggingService.d("disposing MeditationSessionViewModel");
-    KeepScreenOn.turnOff();
+    _loggingService.d('disposing MeditationSessionViewModel');
+    await KeepScreenOn.turnOff();
     _isPlaying = false;
     if (sound.audioPath != null) {
       await _audioService.dispose();
@@ -71,7 +71,7 @@ class MeditationSessionViewModel extends ChangeNotifier {
 
   Future<void> _initSession() async {
     await _initAudio();
-    _startSession();
+    await _startSession();
   }
 
   Future<void> _initAudio() async {
@@ -80,16 +80,16 @@ class MeditationSessionViewModel extends ChangeNotifier {
     }
   }
 
-  void _startSession() async {
+  Future<void> _startSession() async {
     _isPlaying = true;
     if (sound.audioPath != null) {
       _audioService.playAudio();
     }
-    _timerTick();
+    await _timerTick();
     notifyListeners();
   }
 
-  void _timerTick() async {
+  Future<void> _timerTick() async {
     while (_isPlaying) {
       await Future.delayed(const Duration(seconds: 1));
       if (_isPlaying) {

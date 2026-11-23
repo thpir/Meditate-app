@@ -4,11 +4,15 @@ import 'package:meditate_app/data/services/logging_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsService {
-  static const String NAME_KEY = 'name';
-  static const String AVATAR_KEY = 'avatar';
-  static const String DURATION_KEY = 'duration';
-  static const String SOUND_KEY = 'sound';
-  final LoggingService _loggingService = LoggingService();
+  static const NAME_KEY = 'name';
+  static const AVATAR_KEY = 'avatar';
+  static const DURATION_KEY = 'duration';
+  static const SOUND_KEY = 'sound';
+  static const WATER_GOAL_KEY = 'water_goal_ml';
+  static const WATER_VOLUME_KEY = 'water_volume_ml';
+  static const WATER_INTAKE_KEY = 'water_intake_ml';
+  static const WATER_INTAKE_DATE_KEY = 'water_intake_date';
+  final _loggingService = LoggingService();
   late SharedPreferences _prefs;
 
   Future<void> setString(String key, String value) async {

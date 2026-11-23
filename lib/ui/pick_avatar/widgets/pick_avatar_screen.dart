@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:meditate_app/data/repositories/user_preferences.dart';
 import 'package:meditate_app/domain/models/avatar.dart';
 import 'package:meditate_app/ui/core/theme/app_colors.dart';
 import 'package:meditate_app/ui/core/ui/avatar_view.dart';
+import 'package:meditate_app/ui/core/ui/selected_badge.dart';
 import 'package:meditate_app/ui/pick_avatar/view_model/pick_avatar_view_model.dart';
 import 'package:provider/provider.dart';
 
 class PickAvatarScreen extends StatelessWidget {
-  static const String routeName = '/pick-avatar';
+  static const routeName = '/pick-avatar';
   const PickAvatarScreen({super.key});
 
   @override
@@ -36,7 +37,7 @@ class PickAvatarScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: AvatarListView(),
+        body: const AvatarListView(),
       ),
     );
   }
@@ -50,9 +51,9 @@ class AvatarListView extends StatelessWidget {
     final double screenWidth = MediaQuery.sizeOf(context).width;
 
   List<Widget> populateWrapWithAvatars() {
-      List<Widget> avatarWidgets = [];
-      List<Avatar> avatars = Avatar.values.toList();
-      for (Avatar avatar in avatars) {
+      final List<Widget> avatarWidgets = [];
+      final List<Avatar> avatars = Avatar.values.toList();
+      for (final avatar in avatars) {
         final double avatarSize = screenWidth > 400 ? 160 : screenWidth * 0.4;
         avatarWidgets.add(
           SizedBox.square(
@@ -73,24 +74,7 @@ class AvatarListView extends StatelessWidget {
                   alignment: Alignment.bottomRight,
                   child: Visibility(
                     visible: avatar.id == context.watch<PickAvatarViewModel>().selectedAvatar.id,
-                    child: Container(
-                      width: avatarSize / 4,
-                      height: avatarSize / 4,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.onPrimary,
-                          width: 1,
-                        ),
-                        color: AppColors.tertiary,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.check,
-                        color: AppColors.onPrimary,
-                        size: avatarSize / 6,
-                      ),
-                    ),
+                    child: SelectedBadge(size: avatarSize / 4),
                   ),
                 ),
               ],
