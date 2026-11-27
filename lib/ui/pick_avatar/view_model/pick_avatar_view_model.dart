@@ -10,6 +10,12 @@ class PickAvatarViewModel extends ChangeNotifier {
   Avatar get selectedAvatar => _userPreferences.avatar;
 
   set selectedAvatar(Avatar value) {
+    if (value == selectedAvatar) {
+      return;
+    }
     _userPreferences.avatar = value;
+    // The screen watches this view model, not UserPreferences, so notify here
+    // to move the selected badge.
+    notifyListeners();
   }
 }

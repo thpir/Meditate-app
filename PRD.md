@@ -4,7 +4,7 @@
 |---|---|
 | **Product** | Meditate App |
 | **Product version** | 0.3.0+5 |
-| **Last updated** | 2026-11-25 |
+| **Last updated** | 2026-11-27 |
 | **Owner** | thpir |
 | **Related documents** | [README.md](README.md) (architecture, conventions, design system) · [CHANGELOG.md](CHANGELOG.md) (release history) |
 
@@ -260,7 +260,7 @@ When the elapsed time reaches the total duration:
 **FR-PRO-04 · Pick an avatar**
 - Opened from the Home menu ("Pick an avatar"). The screen is titled "Pick an avatar" and has a back arrow.
 - It shows all 12 illustrated avatars as circles in a scrollable grid. The selected avatar has a badge. (The avatars have internal names: Sofie, Luna, Maya, Zara, Leo, Kai, Ava, Ezra, Jax, Nova, Milo and Sage. These names aren't shown in the UI.)
-- Tapping an avatar selects it and saves it right away. The user stays on the screen.
+- Tapping an avatar selects it and saves it right away. The badge moves to the tapped avatar immediately. The user stays on the screen.
 - The selected avatar is shown on Home and in the session screen.
 
 ## 8. Data and persistence
